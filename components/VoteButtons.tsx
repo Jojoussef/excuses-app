@@ -33,7 +33,11 @@ export default function VoteButtons({
       setLocalScore(response.data.newScore);
       onVoteSuccess();
     } catch (error) {
-      toast.error("Failed to cast vote. Please try again.");
+      if (error instanceof Error) {
+        toast.error("Failed to cast vote. Please try again." + error.message);
+      } else {
+        toast.error("Failed to cast vote. Please try again.");
+      }
     } finally {
       setIsVoting(false);
     }

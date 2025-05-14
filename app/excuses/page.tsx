@@ -22,7 +22,7 @@ export default function ExcusesPage() {
   );
 
   // Safely handle excuses data
-  const excuses = Array.isArray(data) ? data : [];
+  const excuses = useMemo(() => (Array.isArray(data) ? data : []), [data]);
 
   // Update categories when excuses change
   useEffect(() => {

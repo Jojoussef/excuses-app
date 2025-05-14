@@ -19,7 +19,11 @@ export default function HomePage() {
       const response = await apiClient.get("/api/generate");
       setExcuse(response.data);
     } catch (error) {
-      toast.error("Failed to generate an excuse. Try again!"); // Use sonner's toast
+      if (error instanceof Error) {
+        toast.error("Failed to cast vote. Please try again." + error.message);
+      } else {
+        toast.error("Failed to cast vote. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -32,7 +36,7 @@ export default function HomePage() {
           Excuses Machine <span className="text-yellow-300">2000</span>
         </h1>
         <p className="text-xl text-white/80">
-          Need an excuse? We've got you covered!
+          Need an excuse? We&apos;ve got you covered!
         </p>
       </div>
 
