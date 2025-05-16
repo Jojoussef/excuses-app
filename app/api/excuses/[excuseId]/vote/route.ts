@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
 interface Context {
-  params: {
+  params: Promise<{
     excuseId: string;
-  };
+  }>;
 }
 
 export async function POST(request: NextRequest, context: Context) {
   const { params } = context;
   try {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const excuseId = params.excuseId;
+    const { excuseId } = await params;
 
     if (!backendUrl) {
       return NextResponse.json(
