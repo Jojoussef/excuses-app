@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ExcuseCard from "@/components/ExcuseCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -15,7 +15,7 @@ export default function LeaderboardPage() {
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await apiClient.get(
@@ -29,7 +29,7 @@ export default function LeaderboardPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [timeframe]);
 
   const mutate = () => {
     fetchLeaderboard();

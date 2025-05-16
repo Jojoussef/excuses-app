@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { excuseId: string } }
+  context: { params: { excuseId: string } }
 ) {
+  const { params } = context;
   try {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const excuseId = params.excuseId;
