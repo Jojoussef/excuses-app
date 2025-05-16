@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useSWR from "swr";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ExcuseCard from "@/components/ExcuseCard";
 import LoadingSpinner from "@/components/LoadingSpinner";

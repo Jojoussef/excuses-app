@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import useSWR from "swr";
 import ExcuseCard from "@/components/ExcuseCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import type { Excuse } from "@/types";
