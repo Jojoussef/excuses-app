@@ -11,15 +11,44 @@ export default function ExcusesPage() {
   const [filter, setFilter] = useState<string>("all");
   const [categories, setCategories] = useState<string[]>(["all"]);
 
-  // Use direct fetcher to ensure we get the expected data structure
-  const { data, error, isLoading, mutate } = useSWR<Excuse[]>(
-    "/api/excuses",
-    async (url: string) => {
-      const res = await apiClient.get(url);
-      // Ensure we're returning an array
-      return Array.isArray(res.data) ? res.data : [];
-    }
-  );
+  const [data, setData] = useState<Excuse[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+    apiClient
+      .get("/api/excuses")
+      .then((res) => {
+        if (isMounted) {
+          setData(Array.isArray(res.data) ? res.data : []);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) setError(err);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Dummy mutate function for compatibility
+  const mutate = () => {
+    setIsLoading(true);
+    apiClient
+      .get("/api/excuses")
+      .then((res) => {
+        setData(Array.isArray(res.data) ? res.data : []);
+        setError(null);
+      })
+      .catch((err) => setError(err))
+      .finally(() => setIsLoading(false));
+  };
 
   // Safely handle excuses data
   const excuses = useMemo(() => (Array.isArray(data) ? data : []), [data]);

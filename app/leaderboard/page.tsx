@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ExcuseCard from "@/components/ExcuseCard";
@@ -12,14 +12,33 @@ import { apiClient } from "@/lib/api";
 export default function LeaderboardPage() {
   const [timeframe, setTimeframe] = useState<"week" | "all">("week");
 
-  const { data, error, isLoading, mutate } = useSWR<Excuse[]>(
-    `/api/leaderboard?timeframe=${timeframe}`,
-    async (url: string) => {
-      const res = await apiClient.get(url);
-      // Ensure we're returning an array
-      return Array.isArray(res.data) ? res.data : [];
+  const [data, setData] = useState<Excuse[] | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetchLeaderboard = async () => {
+    setIsLoading(true);
+    try {
+      const res = await apiClient.get(
+        `/api/leaderboard?timeframe=${timeframe}`
+      );
+      setData(Array.isArray(res.data) ? res.data : []);
+      setError(null);
+    } catch (err) {
+      setError(err as Error);
+      setData(null);
+    } finally {
+      setIsLoading(false);
     }
-  );
+  };
+
+  const mutate = () => {
+    fetchLeaderboard();
+  };
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, [timeframe]);
 
   // Safely handle excuses data
   const excuses = Array.isArray(data) ? data : [];

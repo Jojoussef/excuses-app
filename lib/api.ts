@@ -2,12 +2,12 @@ import axios from "axios";
 
 // Create an Axios instance with default config
 
-if (process.env.NEXT_PUBLIC_BACKEND_URL === undefined) {
-  throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
+if (process.env.NEXT_PUBLIC_APP_URL === undefined) {
+  throw new Error("NEXT_PUBLIC_APP_URL is not defined");
 }
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "",
+  baseURL: process.env.NEXT_PUBLIC_APP_URL || "",
   headers: {
     "Content-Type": "application/json",
   },
