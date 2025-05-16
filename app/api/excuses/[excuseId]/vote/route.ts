@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(
-  request: NextRequest,
-  context: { params: { excuseId: string } }
-) {
+interface Context {
+  params: {
+    excuseId: string;
+  };
+}
+
+export async function POST(request: NextRequest, context: Context) {
   const { params } = context;
   try {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
