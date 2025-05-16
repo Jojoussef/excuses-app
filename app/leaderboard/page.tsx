@@ -37,7 +37,7 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [timeframe]);
+  }, [timeframe, fetchLeaderboard]);
 
   // Safely handle excuses data
   const excuses = Array.isArray(data) ? data : [];
